@@ -1,10 +1,12 @@
-import { useState, useRef } from 'react';
+import { useState, useRef ,useContext} from 'react';
 
 import classes from './AuthForm.module.css';
+import AuthContext from '../../store/auth-context';
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading,setLoading]=useState(false);
+const ctx=  useContext(AuthContext)
   const emailInputRef=useRef();
   const passwordInputRef=useRef();
 
@@ -22,7 +24,7 @@ const AuthForm = () => {
       if(isLogin){
         url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCz7mM_9j5Fifjiz1AFZxtuRYUx3_9MqrI'
       }else{
-        url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCz7mM_9j5Fifjiz1AFZxtuRYUx3_9MqrI'
+        url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCz7mM_9j5Fifjiz1AFZxtuRYUx3_9MqrI'
       }
         fetch(url,{
           method:'POST',
@@ -39,7 +41,7 @@ const AuthForm = () => {
           if(res.ok){
               return res.json();
           }else{
-              const data = await res.json();
+            const data = await res.json();
             // console.log(data);
             let errorMessage = 'Authentication failed';
             //  if(data&&data.error&&data.error.message){
@@ -48,7 +50,7 @@ const AuthForm = () => {
            throw new Error(errorMessage)
           }
         }).then(data=>{
-            console.log(data);
+            ctx.logIn(data.idToken);
         }).catch(err=>{
             alert(err.message)
         })
@@ -74,7 +76,7 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          {/* {isLoading && <p>sending request....</p> } */}
+          
           {!isLoading&&<button>{isLogin?'Log in':'create account'}</button>}
           {isLoading&&<p>sending reuest...</p>}
          <button
