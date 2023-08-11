@@ -1,9 +1,11 @@
 import { useState, useRef ,useContext} from 'react';
+import {useHistory} from 'react-router-dom'
 
 import classes from './AuthForm.module.css';
 import AuthContext from '../../store/auth-context';
 
 const AuthForm = () => {
+  const history=useHistory();
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading,setLoading]=useState(false);
 const ctx=  useContext(AuthContext)
@@ -51,6 +53,7 @@ const ctx=  useContext(AuthContext)
           }
         }).then(data=>{
             ctx.logIn(data.idToken);
+            history.replace('/profile');
         }).catch(err=>{
             alert(err.message)
         })
@@ -78,7 +81,7 @@ const ctx=  useContext(AuthContext)
         <div className={classes.actions}>
           
           {!isLoading&&<button>{isLogin?'Log in':'create account'}</button>}
-          {isLoading&&<p>sending reuest...</p>}
+          {isLoading&&<p>sending request...</p>}
          <button
             type='button'
             className={classes.toggle}
