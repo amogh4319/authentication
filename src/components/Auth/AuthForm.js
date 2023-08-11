@@ -53,6 +53,7 @@ const ctx=  useContext(AuthContext)
           }
         }).then(data=>{
             ctx.logIn(data.idToken);
+            
             history.replace('/profile');
         }).catch(err=>{
             alert(err.message)

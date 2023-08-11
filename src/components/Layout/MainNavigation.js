@@ -10,6 +10,7 @@ const MainNavigation = () => {
   const isLoggedIn=ctx.isLoggedIn;
   const logoutfromPage=()=>{
     ctx.logOut();
+   
    history.replace('/auth');
   }
   return (
